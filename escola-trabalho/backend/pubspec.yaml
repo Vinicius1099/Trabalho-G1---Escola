@@ -1,0 +1,16 @@
+name: escola_backend
+description: Backend da aplicação Escola com Dart e Shelf
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  shelf: ^1.4.1
+  shelf_router: ^1.1.4
+  sqlite3: ^2.4.0
+  sqlite3_flutter_libs: any
+
+dev_dependencies:
+  lints: ^3.0.0

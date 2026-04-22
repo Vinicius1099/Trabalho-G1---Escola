@@ -1,0 +1,166 @@
+{
+  "info": {
+    "name": "Escola API",
+    "_postman_id": "escola-api-collection",
+    "description": "Coleção completa da API REST do sistema Escola. Entidades: Turmas (pai) e Alunos (filho), com relacionamento 1:N.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Turmas",
+      "description": "Endpoints para gerenciamento das turmas (entidade pai).",
+      "item": [
+        {
+          "name": "Listar todas as turmas",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/turmas",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "description": "Retorna uma lista com todas as turmas cadastradas no banco de dados."
+          }
+        },
+        {
+          "name": "Buscar turma por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/turmas/1",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "description": "Retorna os dados de uma turma específica com base no ID informado na URL. Retorna 404 se não encontrada."
+          }
+        },
+        {
+          "name": "Criar turma",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/turmas",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Turma A\",\n  \"serie\": \"1º Ano\",\n  \"turno\": \"Manhã\"\n}"
+            },
+            "description": "Cria uma nova turma. Campos obrigatórios: nome, serie, turno. Retorna 201 com a turma criada."
+          }
+        },
+        {
+          "name": "Atualizar turma",
+          "request": {
+            "method": "PUT",
+            "url": "{{base_url}}/turmas/1",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Turma A - Atualizada\",\n  \"serie\": \"1º Ano\",\n  \"turno\": \"Tarde\"\n}"
+            },
+            "description": "Atualiza os dados de uma turma existente pelo ID. Retorna 200 com a turma atualizada ou 404 se não encontrada."
+          }
+        },
+        {
+          "name": "Remover turma",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/turmas/1",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "description": "Remove uma turma pelo ID (e todos os alunos vinculados a ela). Retorna 204 sem conteúdo ou 404 se não encontrada."
+          }
+        },
+        {
+          "name": "Listar alunos de uma turma",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/turmas/1/alunos",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "description": "Retorna todos os alunos vinculados à turma com o ID informado. Retorna 404 se a turma não existir."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Alunos",
+      "description": "Endpoints para gerenciamento dos alunos (entidade filho).",
+      "item": [
+        {
+          "name": "Listar todos os alunos",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/alunos",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "description": "Retorna uma lista com todos os alunos cadastrados no banco de dados."
+          }
+        },
+        {
+          "name": "Buscar aluno por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/alunos/1",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "description": "Retorna os dados de um aluno específico com base no ID informado na URL. Retorna 404 se não encontrado."
+          }
+        },
+        {
+          "name": "Criar aluno",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/alunos",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"João da Silva\",\n  \"idade\": 16,\n  \"matricula\": \"2024001\",\n  \"turma_id\": 1\n}"
+            },
+            "description": "Cria um novo aluno. Campos obrigatórios: nome, idade, matricula, turma_id. A matrícula deve ser única. Retorna 201 com o aluno criado."
+          }
+        },
+        {
+          "name": "Atualizar aluno",
+          "request": {
+            "method": "PUT",
+            "url": "{{base_url}}/alunos/1",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"João da Silva Atualizado\",\n  \"idade\": 17,\n  \"matricula\": \"2024001\",\n  \"turma_id\": 1\n}"
+            },
+            "description": "Atualiza os dados de um aluno existente pelo ID. Retorna 200 com o aluno atualizado ou 404 se não encontrado."
+          }
+        },
+        {
+          "name": "Remover aluno",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/alunos/1",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "description": "Remove um aluno pelo ID. Retorna 204 sem conteúdo ou 404 se não encontrado."
+          }
+        }
+      ]
+    }
+  ]
+}
