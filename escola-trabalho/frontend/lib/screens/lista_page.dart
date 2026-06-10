@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import '../models/aluno.dart';
 import '../services/aluno_service.dart';
+import 'detalhe_page.dart';
+import 'formulario_page.dart';
 
 class ListaPage extends StatefulWidget {
   const ListaPage({super.key});
@@ -44,6 +46,23 @@ class _ListaPageState extends State<ListaPage> {
     }
   }
 
+  Future<void> _abrirDetalhe(Aluno aluno) async {
+    final atualizado = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(builder: (_) => DetalhePage(aluno: aluno)),
+    );
+    // Se o aluno foi editado ou excluído, recarrega a lista
+    if (atualizado == true) _carregarDados();
+  }
+
+  Future<void> _abrirFormularioCriacao() async {
+    final criado = await Navigator.push<Aluno>(
+      context,
+      MaterialPageRoute(builder: (_) => const FormularioPage()),
+    );
+    if (criado != null) _carregarDados();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,6 +81,13 @@ class _ListaPageState extends State<ListaPage> {
             onPressed: _carregarDados,
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _abrirFormularioCriacao,
+        backgroundColor: const Color(0xFF1565C0),
+        foregroundColor: Colors.white,
+        tooltip: 'Novo aluno',
+        child: const Icon(Icons.add),
       ),
       body: _buildBody(),
     );
@@ -108,15 +134,25 @@ class _ListaPageState extends State<ListaPage> {
     }
 
     if (_alunos.isEmpty) {
-      return const Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.person_off, size: 64, color: Colors.grey),
-            SizedBox(height: 16),
-            Text(
+            const Icon(Icons.person_off, size: 64, color: Colors.grey),
+            const SizedBox(height: 16),
+            const Text(
               'Nenhum aluno cadastrado.',
               style: TextStyle(fontSize: 16, color: Colors.grey),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton.icon(
+              onPressed: _abrirFormularioCriacao,
+              icon: const Icon(Icons.add),
+              label: const Text('Cadastrar primeiro aluno'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF1565C0),
+                foregroundColor: Colors.white,
+              ),
             ),
           ],
         ),
@@ -147,6 +183,7 @@ class _ListaPageState extends State<ListaPage> {
                 margin: const EdgeInsets.only(bottom: 10),
                 elevation: 2,
                 child: ListTile(
+                  onTap: () => _abrirDetalhe(aluno),
                   leading: CircleAvatar(
                     backgroundColor: const Color(0xFF1565C0),
                     child: Text(
